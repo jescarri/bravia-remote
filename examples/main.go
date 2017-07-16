@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"github.com/davecgh/go-spew/spew"
 	"gitlab.identitylabs.mx/jescarri/bravia-remote/pkg/client"
+	"time"
 )
 
 func main() {
@@ -12,8 +11,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	spew.Dump(remote)
-	err = remote.SendCode("AAAAAQAAAAEAAAASAw==")
-
-	fmt.Println(err)
+	err = remote.Do("Pause")
+	if err != nil {
+		panic(err)
+	}
+	time.Sleep(10 * time.Second)
+	err = remote.Do("Play")
+	if err != nil {
+		panic(err)
+	}
 }

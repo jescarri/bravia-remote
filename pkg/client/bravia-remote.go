@@ -3,7 +3,7 @@ package bravia
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
+	//"github.com/davecgh/go-spew/spew"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -77,7 +77,6 @@ func flatenCodesResponse(r io.Reader) (map[string]string, error) {
 	for _, v := range a.Codes {
 		switch reflect.TypeOf(v).Kind() {
 		case reflect.Slice:
-			fmt.Println("Hooraaay")
 			s := reflect.ValueOf(v)
 			for i := 0; i < s.Len(); i++ {
 				if reflect.TypeOf(s.Index(i)).Kind() == reflect.Struct {
@@ -113,4 +112,23 @@ func (r *Remote) SendCode(code string) error {
 	}
 	return nil
 
+}
+
+func (r *Remote) GetCodeForAction(action string) (string, error) {
+	if code, ok := r.AvailabeCodes[action]; ok {
+		return code, nil
+	}
+	return "", fmt.Errorf("No code found for Action %s", action)
+}
+
+func (r *Remote) Do(action string) error {
+	code, err := r.GetCodeForAction(action)
+	if err != nil {
+		return err
+	}
+	err = r.SendCode(code)
+	if err != nil {
+		return err
+	}
+	return nil
 }
