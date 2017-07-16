@@ -82,7 +82,7 @@ func flatenCodesResponse(r io.Reader) (map[string]string, error) {
 				if reflect.TypeOf(s.Index(i)).Kind() == reflect.Struct {
 					ds := s.Index(i).Interface().(map[string]interface{})
 					if name, ok := ds["name"]; ok {
-						codes[name.(string)] = ds["value"].(string)
+						codes[strings.ToLower(name.(string))] = ds["value"].(string)
 					}
 
 				}

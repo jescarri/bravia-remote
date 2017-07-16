@@ -11,12 +11,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = remote.Do("Pause")
+	err = remote.Do("pause")
 	if err != nil {
 		panic(err)
 	}
 	time.Sleep(10 * time.Second)
-	err = remote.Do("Play")
+	err = remote.Do("play")
 	if err != nil {
 		panic(err)
 	}
